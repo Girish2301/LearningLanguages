@@ -42,13 +42,116 @@ int main(){ //entry point
 
 	//DataTypes-int,unsigned int,char,short,long,long long,float,double,bool
 
-	log("girish");
+	/*log("girish");
 
 	std::cout<<mul(5,3)<<std::endl;
+`	*/
+	  /* OUTPUT */
+  /***************************
 
+  girish
+  15
+
+  ***************************/
 	//Header Files- used to include files with fn declarations to help linker
 	
 	//while ".h" used for relative path and <.h> within include directory.
 
+	//Conditions-
+
+	// It makes switch to different machine code instructions based on conditions
+	// It creates overhead because of loading all machine instructions in memory
+
+	// int x=5;
+	// bool ans=x==5;
+	// if(x){ //switches to this machine instruction
+	// 	log("girish");
+	// }
+	// else{ // it doesn't execute but loaded in memory,causes overhead
+	// 	log("manish");
+	// }
+
+	  /* OUTPUT */
+  /***************************
+
+  girish
+
+  ***************************/
+	// Loops-
+
+	// For Loop-initialization;condition;execution(after every iteration)
+	// for(int i=0;i<5;i++){
+	// 	log("hello");
+	// }
+
+	  /* OUTPUT */
+  /***************************
+   
+   hello
+   hello
+   hello
+   hello
+   hello
+
+  ***************************/
+
+	//While Loop-
+	// int i=0;
+	// while(i<5){
+	// 	log("hi");
+	// 	i++;
+	// }
+
+	  /* OUTPUT */
+  /***************************
+
+  hi
+  hi
+  hi
+  hi
+  hi
+
+  ***************************/
+
+	//Do-While Loop- executed once no matter what
+
+	// int i=0;
+	// do{
+	// 	log("do it");
+	// 	i++;
+	// }while(i<5);
+
+	  /* OUTPUT */
+  /***************************
+
+  do it
+  do it
+  do it
+  do it
+  do it
+
+  ***************************/
+
+	//Control Flow statements-
+
+	//Continue-skips iteration
+
+	// for(int i=0;i<5;i++){
+	// 	if(i%2)continue; //skips odd iterations
+	// 	log("hi");
+	// 	std::cout<<i<<std::endl; 
+	// }
+
+  /* OUTPUT */
+  /***************************
+
+  hi
+  0
+  hi
+  2
+  hi
+  4
+
+  ***************************/
 }
 #endif
