@@ -1,0 +1,132 @@
+#key value pairs
+"hello": "I am a human"
+---
+#lists
+- apple
+- mango
+- banana
+- grapes
+
+--- #for creating breaks between docs
+lists of one piece characters: !!seq
+- luffy
+- zoro
+- nami 
+- captain ussop
+- Gol D. Roger
+---
+
+cities: [mumbai, hyderabad, new delhi] #flow style
+---
+{
+  madara uchiha: "uchiha clan",
+  hashirama senju: " senju clan"
+ } #jsontype style
+---
+#datatypes
+ #string variables
+ name: !!str "hisoka"
+ power : bungee gum
+ memeber : 'former member of Phantom troupes'
+ player : | #| is used for storing multiple lines
+ what a player
+ and a men of culture 
+ and stuff like that
+#writing multiple lines which are going to get stored in a single line so we use > for that
+message:
+chunking is the 
+best way to learn new stuff
+and can help strengthening synapses
+---
+number : 6969 #int datatype
+marks : 935.98 #float datatype
+booleanvalue: FALSE # it can also be written as n,N,false,False,No
+booleanvalue: !!bool True # it can also be written as y,Y,Yes,TRUE,yes,y
+---
+#specify datatype
+#int
+zero: !!int 0
+binaryNum : !!int 0b1101
+octalNUM : !!int 03271
+hexNUm : !!int 0x23
+commavalue : !!int +540_000 #540,000
+#float
+mark : !!float .007
+
+infinite : !!float .inf
+notanum : .nan
+#null
+null : !!null Null #null,NULL,~
+~: this is a null key
+exponents : 6.328E4
+indian datetime : !!timestamp 2022-2-8T21:59:43 +05:30
+---
+#some of seq can be empty
+#sparse seq
+sparse seq :
+- nani
+- bruh
+- yeh toh bhery nice bhund hai ji
+-
+- null
+
+#nested sequence
+- avengers
+ - stark
+ - bruce
+ - natalia
+ - peter
+-
+ - Iron man
+ - Hulk
+ - black widow
+ - spiderman 
+---
+#key:value pairs are called maps !!map
+#nested mappings
+name: girish
+about: 
+  role: student
+  age: 18
+  what i do: i code 
+
+# pairs:keys may have duplicate values !!pairs
+pair ex: !!pairs
+- role: coder
+- role: app developer
+- role: three js and animation learner
+#set will allow us to have unique values in a seq
+names: !!set
+? Girish
+? Jordi
+? KK
+? Striver
+#dictionary !!omap
+People : !!omap
+ - kishan:
+    role: youtuber
+    ethnicity: Indian
+ - chisei: 
+    role: swordsman
+    ethnicity: dragonblood
+    brother: chisei gen 
+---
+#reusing some properties using anchors
+likings: &likes
+  fav fruit: banana
+  dislikes : paneer
+person1:
+  name: singh 
+  <<: *likes
+  dislikes: ridged gourd
+person2:
+  name: sharma
+  fav fruit: pineapple
+  dislikes : bitterguard
+person3: 
+  name: chauhan
+  <<: *likes
+# [] represents collections and {} represents single entity in json
+
+
+... #for ending doc
