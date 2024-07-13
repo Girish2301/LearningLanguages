@@ -5,6 +5,8 @@
 
 #include <bits/stdc++.h>
 
+using namespace std;
+
 #ifndef _STDC_H //to check if variable is defined or not
 #define _STDC_H
 
@@ -48,6 +50,9 @@ public:
 struct Power{
 	int value;
 	double p;
+
+	Power():value(0),p(1){} //initializer list best to use otherwise
+	//creates extra copy in normal constructor initialization
 
 	void result(){
 		std::cout<<pow(value,p)<<std::endl;
@@ -97,11 +102,96 @@ public:
 	}
 };
 
-struct Entity{
-	static int x,y;
+// class Entity{
+// public:
+// 	float x,y;
+// 	void move(float a,float b){
+// 		x+=a;
+// 		y+=b;
+// 	}
+// };
+
+// class Person: public Entity{ //inheriting Entity class
+// public:
+// 	const char* name;
+// 	void printName(){
+// 		std::cout<<name<<std::endl;
+// 	}
+// };
+
+class Printable{
+public:
+	virtual std::string getClassName()=0;
 };
 
-int Entity::x,Entity::y; //giving file scope
+class Entity:public Printable{
+public:
+	// virtual int getGf()=0; //interface
+	virtual std::string getName(){return "Entity";}
+	std::string getClassName() override{return "Entity";}
+};
+
+class Person:public Entity{
+public:
+	std::string m_name;
+	Person():m_name("Girish"){
+		// cout<<"Person is Alive"<<endl;
+	}
+	Person(const std::string &name){
+		m_name=name;
+	}
+	std::string getName() override {return m_name;}
+	std::string getClassName() override{return "Person";}
+	~Person(){
+		// cout<<"Person is Dead"<<endl;
+	}
+};
+
+class Copy{
+public:
+	char *name;
+	unsigned int size;
+	Copy(const char *n){
+		size=strlen(n);
+		name=new char[size+1];
+		memcpy(name,n,size);
+		name[size]=0;
+	}
+
+	Copy(const Copy &other):size(other.size){
+		name=new char[size];
+		memcpy(name,other.name,size);
+		name[size]=0;
+	}
+
+	~Copy(){
+		delete[] name;
+	}
+};
+
+// struct Entity{
+// 	static int x,y;
+// };
+
+// int Entity::x,Entity::y; //giving file scope
+
+struct Vector2{
+	float x,y;
+	Vector2(float a,float b):x(a),y(b){}
+
+	Vector2 operator+(const Vector2 &another) const{
+		return Vector2(x+another.x,y+another.y);
+	}
+	Vector2 operator*(const Vector2 &another) const{
+		return Vector2(x*another.x,y*another.y);
+	}
+
+};
+
+ostream& operator<<(ostream &stream,const Vector2 &v){
+		stream<<v.x<<" "<<v.y<<endl;
+		return stream;
+}
 
 enum Example{
 	a,b,c // by default 0 and other variables inc by 1
@@ -415,6 +505,262 @@ int main(){ //entry point
   Log Object Destroyed
 
   ***************************/
+
+	//Inheritance- Inheriting code from parent class
+
+	// Person p; //Person is inheriting x,y from Entity class
+	// p.move(5,3);
+	// std::cout<<p.x<<" "<<p.y<<std::endl;
+
+	/* OUTPUT */
+  /***************************
+
+  5 3
+
+  ***************************/
+
+	//Virtual Functions- Functions that generate vtable to correctly map
+	// actual & overiding functions i.e., dynamic dispatch.
+
+	// Entity *e=new Entity();
+	// Person *p=new Person("Girish");
+	// Entity *n=p;
+
+	// std::cout<<e->getName()<<std::endl;
+	// std::cout<<n->getName()<<std::endl;
+
+	// without virtual functions-player object treated as entity resulting
+	// in wrong mapping of function
+		/* OUTPUT */
+  /***************************
+
+  Entity
+  Entity
+
+  ***************************/
+
+	//with virtual function- recognizes vtable for function and correctly maps it
+
+		/* OUTPUT */
+  /***************************
+
+  Entity
+  Girish
+
+  ***************************/
+
+	//Interfaces(pure virtual functions)-
+	// functions with no body and enforces them to be overridden
+	//it needs to be initialized to make objects
+
+	// Printable *p=new Entity();
+	// cout<<p->getClassName()<<endl;
+	// p=new Person("Hisoka");
+	// cout<<p->getClassName()<<endl;
+
+		/* OUTPUT */
+  /***************************
+
+  Entity
+  Person
+
+  ***************************/
+
+	//Visibility-defines scope of code
+
+	//private-default,only class and friend scope
+	//protected- only class and subclass scope
+	//public-anyone can access
+
+	//Arrays-collection of elements in continuous manner
+
+	// int arr[5];
+	// arr[0]=23;
+	// cout<<arr<<endl;
+
+	//array cx11-
+	
+	// array<int,5> arr;
+	// cout<<arr.size()<<endl;
+
+	//arrays in heaps-
+
+	// int *arr=new int[5];
+	// arr[2]=6;
+	// cout<<arr[2]<<endl;
+	// delete[] arr;
+
+	//Strings-collection of characters
+	//for char *- \0 acts as null terminating character
+
+	// string s="girish";
+	// bool contains=s.find("ir")!=string::npos;
+	// cout<<contains<<endl;
+
+		/* OUTPUT */
+  /***************************
+
+  1
+
+  ***************************/
+
+	//Types of char*-
+	// const wchar_t *ch=L"girish"; //1 or 2 or 4 bytes
+	// const char16_t *c=u"girish"; //2 bytes
+	// const char23_t *cc=U"girish"; //4 bytes
+
+	//R"string" used for writing paragraphs
+
+	//const-can't change contents of variables
+
+	//first const signifies can't change address of *
+	//second const signifies can't change content/value of variable a
+
+	// const int* const a=new int;
+
+	// const methods signifies can't change content of class in fn
+	// but can only change mutable variables in fn
+
+	//Mutable with lambdas-
+
+	// int x=8;
+	// auto f=[=]() mutable{ 
+	// //= means pass by value,& means pass by reference 
+	// 	x++; //mutable makes local copy in case of pass by value
+	// 	cout<<x<<endl;
+	// };
+	// f();
+	// cout<<x<<endl;
+
+		/* OUTPUT */
+  /***************************
+
+  9
+  8
+
+  ***************************/
+
+	//Ternary Operator-?:  useful due to return value optimization
+	
+	// int level=12;
+	// string rank=level>10?"Master":"Beginner";
+	// cout<<rank<<endl;
+
+			/* OUTPUT */
+  /***************************
+
+  Master
+
+  ***************************/
+
+	//Explicit keyword-removes implicit conversion
+
+	// Operator Overloading- changing operator functionalities
+
+	// Vector2 pos(0.4f,0.6f);
+	// Vector2 speed(0.2f,0.7f);
+	// Vector2 power(1.1f,1.1f);
+	// Vector2 result=pos+speed*power;
+	// cout<<result;
+
+			/* OUTPUT */
+  /***************************
+
+  0.62 1.37
+
+  ***************************/
+
+	//this-*ptr to current object instance
+
+	//Smart Pointers-automate new and delete mechanism
+
+	// Unique pointer-destroyed when out of scope,can't copy them
+	{
+		// unique_ptr<Person> p(new Person()); OR
+		// unique_ptr<Person> p=make_unique<Person>();
+		// cout<<p->m_name<<endl;
+
+		/* OUTPUT */
+  /***************************
+
+  Person is Alive
+  Girish
+  Person is Dead
+
+  ***************************/
+
+	}
+
+	//Shared Pointer-used count of references and whenever 0 memory freed
+
+	// works fine but not recommended due to allocation happens two times.
+	// shared_ptr<Person> p(new Person());
+
+	//Recommended-
+	// shared_ptr<Person> p=make_shared<Person>();
+
+	//Weak Pointer-doesn't increase ref count and whenever original dies it dies
+	// weak_ptr<Person> p;
+	// {
+	// 	shared_ptr<Person> sharedp=make_shared<Person>();
+	// 	p=sharedp;
+	// } //here ref becomes 0 and destroyed shared pointer and weak pointer too
+
+		/* OUTPUT */
+  /***************************
+
+  Person is Alive
+  Person is Dead
+
+  ***************************/
+
+	//	Shallow copy-takes all variables and copy its contents
+
+	// Copy a("Girish");
+	// Copy b=a;
+	// b.name[2]='g'; //copies address of ptr instead of name's value
+	// cout<<a.name<<endl;
+	// cout<<b.name<<endl;
+	//thus called shallow copy and creates problem incase of dynamic obj
+
+		/* OUTPUT */
+  /***************************
+
+  Gigish
+  Gigish
+
+  ***************************/
+
+	//Deep copy-copy contents of dynamic obj using copy constructor
+
+	// Copy a("Girish");
+	// Copy b=a;
+	// b.name[2]='g';
+	// cout<<a.name<<endl;
+	// cout<<b.name<<endl;
+
+		/* OUTPUT */
+  /***************************
+
+  Girish
+  Gigish
+
+  ***************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
