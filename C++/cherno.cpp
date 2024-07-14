@@ -5,10 +5,12 @@
 
 #include <bits/stdc++.h>
 
+#define PI 3.14
 using namespace std;
+using umap=unordered_map<string,int>;
 
-#ifndef _STDC_H //to check if variable is defined or not
 #define _STDC_H
+#ifndef _STDC_H //to check if variable is defined or not
 
 #include <bits/stdc++.h>
 
@@ -196,6 +198,24 @@ ostream& operator<<(ostream &stream,const Vector2 &v){
 enum Example{
 	a,b,c // by default 0 and other variables inc by 1
 };
+
+template<typename T> //template
+
+void print(T value){
+	cout<<value<<endl;
+}
+
+void hello(){
+	cout<<"Hello"<<endl;
+}
+
+void printVal(int value){
+	cout<<"Value: "<<value<<endl;
+}
+void printVec(vector<int> &v,void (*fun)(int)){
+	for(auto &item:v)fun(item);
+}
+
 
 int main(){ //entry point
 	// main function special case no need to return any value
@@ -450,6 +470,9 @@ int main(){ //entry point
 
 	//Inside Class- same memory shared with all class instances
 	// static funcitons can't use non-static members
+
+	// Inside Local Scope- same memory shared all instances of fn
+
 
 	// Entity e;
 	// Entity::x=5;
@@ -747,10 +770,104 @@ int main(){ //entry point
 
   ***************************/
 
+	//Dynamic arrays/vectors-underlying storage on heap
+	//if vector size exceeds capacity*=2 
+
+	// vector<int> v;
+
+	// if we know rough idea of size better reserve memory for it
+	// as resizing creates additional copies creating overhead
+
+	// v.reserve(3);
+	// v.emplace_back(1);
+
+	// creates two copies as object is initialized in main stackframe
+	// then reassigned to where vector memory is allocated
+	// optimize via emplace_back
+	
+	// v.emplace_back(2);
+	// cout<<v.size()<<endl;
+	// v.erase(v.begin());
+	// cout<<v.size()<<endl;
+
+	//static linking-whenever exe is executed it loads whole libraries linked
+
+	//Dynamic linking-whenever exe is executed we can dynamically link components of library in runtime
+	// .dll files are used for it
+	// dll.lib files-static library containing locations of fn,symbols
+	//.lib file contain definition of fn.
+	// .h files contain declaration of fn.
+	//make sure .dll in same folder as .exe file
+
+	//multiple return values- convert to same type
+	//or use struct datatypes
+
+	//or use tuple-allows to make collection of different datatype elements
+
+	// tuple<string,int,float> p=make_tuple("girish",21,50.5);
+	// cout<<get<0>(p)<<" "<<get<1>(p)<<" "<<get<2>(p)<<endl;
 
 
+		/* OUTPUT */
+  /***************************
 
+  girish 21 50.5
 
+  ***************************/
+
+	//Templates- it replaces typename/class in template defined units
+	//doesn't exist till call it
+
+	// print<int>(5); //explicit definiton in <>
+	// print("girish"); //implicit conversion
+	// print(8.73);
+
+		/* OUTPUT */
+  /***************************
+
+  5
+  girish
+  8.73
+
+  ***************************/	
+
+	//Stack memory-pointer where variables are stored high to low,continuous allocation
+	//Heap-memory allocation by freelist and supports high size
+
+	//Macros-variables to replace some defined values allocated in compile time
+	// cout<<PI<<endl; //3.14
+
+	//auto-automatically selects dtype of variable
+	// auto a=5;
+	// int b=a;
+	// cout<<b<<endl; //5
+
+	//Function pointers-pointer to function to store in variables as reference
+
+	// auto p=hello; //type is void(*p)()
+	// p(); //Output-Hello 
+
+	// vector<int> v={1,2,3,4,5,6};
+	// printVec(v,printVal); //printVal is function pointer
+
+		/* OUTPUT */
+  /***************************
+
+  Value: 1
+  Value: 2
+  Value: 3
+  Value: 4
+  Value: 5
+  Value: 6
+
+  ***************************/	
+
+	//Lambdas-anonymous functions
+
+	// vector<int> v={1,2,3,4,5,6};
+	// auto lambda=[](int val){cout<<"Value: "<<val<<endl;}
+	// //[] captures,() params,{} body
+	// printVec(v,lambda);
 
 
 
