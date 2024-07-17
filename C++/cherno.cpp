@@ -4,17 +4,18 @@
 // #pragma once //to ensure file is included once only(.h file exclusive)
 
 #include <bits/stdc++.h>
+#include<thread>
 
 #define PI 3.14
 using namespace std;
 using umap=unordered_map<string,int>;
 
-#define _STDC_H
-#ifndef _STDC_H //to check if variable is defined or not
+// #define _STDC_H
+// #ifndef _STDC_H //to check if variable is defined or not
 
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
 
-#endif 
+// #endif 
 
 #define INTEGER int // defines and replaces INTEGER(name) with value(int)
 
@@ -216,6 +217,49 @@ void printVec(vector<int> &v,void (*fun)(int)){
 	for(auto &item:v)fun(item);
 }
 
+namespace myScope{
+	namespace myFunctions{
+		void print(){
+			cout<<"This is myScope myFunctions"<<endl;
+		}
+	}
+}
+
+struct Type{
+public:
+	int x,y;
+	int *getPositions(){
+		return &x;
+	}
+};
+
+
+void work(){
+	using namespace std::literals::chrono_literals;
+	while(true){
+		std::cout<<"I am working"<<std::endl;
+		// std::this_thread::sleep_for(2s);
+	}
+}
+
+struct Vec2{
+	int x,y;
+};
+
+void print(Vec2 &v){
+	cout<<v.x<<" "<<v.y<<endl;
+}
+
+class A{
+public:
+	A(){cout<<"Base Constructor"<<endl;}
+	virtual ~A(){cout<<"Base Destructor"<<endl;}
+};
+class B:public A{
+public:
+	B(){cout<<"Derived Constructor"<<endl;}
+	~B(){cout<<"Derived Destructor"<<endl;}
+};
 
 int main(){ //entry point
 	// main function special case no need to return any value
@@ -868,11 +912,171 @@ int main(){ //entry point
 	// auto lambda=[](int val){cout<<"Value: "<<val<<endl;}
 	// //[] captures,() params,{} body
 	// printVec(v,lambda);
+	
+	//Namespaces-
+	//using mutliple namespaces can use conflicts and undefined behaviour
+	// namespaces exist to reduce naming conflicts
+
+	// namespace x=myScope::myFunctions; //simplify namespaces
+	// x::print();
+
+		/* OUTPUT */
+  /***************************
+
+  This is myScope myFunctions
 
 
+  ***************************/	
 
+	//Threads-
 
+	// thread worker(work);
+	// worker.join(); // acts like wait() i.e., wait for worker thread
+	//to get finished in main thread
+	// int i=0;
+	// while(i<5){
+	// 	cout<<"I am not working"<<endl;
+	// 	i++;
+	// }
 
+		/* OUTPUT */
+  /***************************
+	//without join()
+	I am not working
+	I am not working
+	I am not working
+	I am not working
+	I am not working
+	terminate called without an active exception
+	I am working
+	I am working
+	I am working
+	I am working
+	I am working
+
+  ***************************/	
+
+	//Timing-
+
+	// using namespace std::literals::chrono_literals;
+	// auto start=std::chrono::high_resolution_clock::now();
+	// int i=0;
+	// while(i<10000000){i++;}
+	// auto end=std::chrono::high_resolution_clock::now();
+
+	// std::chrono::duration<double> duration=end-start;
+	// cout<<duration.count()<<"s"<<endl;
+
+		/* OUTPUT */
+  /***************************
+	
+	0.02227s
+
+  ***************************/	
+
+	//multi-dim arrays-
+
+	// int **parr=new int*[10];
+    // for(int i=0;i<50;i++)delete[] parr[i];
+	// delete[] parr;
+
+	//Sorting- best way is using std::sort()
+	// vector<int> v={1,3,2,4,6};
+	// sort(v.begin(),v.end());
+	// for(auto it:v)cout<<it<<" ";
+
+		/* OUTPUT */
+  /***************************
+	
+	1 2 3 4 6 
+
+  ***************************/	
+
+	// Type Punning- treating same memory as of different type
+	// int a=5;
+	// double b=a; //int to double implicit conversion
+
+	// Type t={5,8};
+	// int* arr=t.getPositions(); //struct with into int treated as int*
+	// cout<<t.x<<" "<<t.y<<endl;
+	// arr[0]=1,arr[1]=5;
+	// cout<<arr[0]<<" "<<arr[1]<<endl;
+
+		/* OUTPUT */
+  /***************************
+	
+	5 8
+	1 5
+
+  ***************************/	
+
+	//Union-collection of different variables with same value and only member
+
+	// struct Union{
+	// 	union{
+	// 		double a;int b;
+	// 	};
+	// };
+	// Union u;
+	// u.b=2;
+	// cout<<u.a<<" "<<u.b;
+
+		/* OUTPUT */
+  /***************************
+	
+	1.79233e-307 2
+	//double value is double representation of int b
+
+  ***************************/	
+
+	//another usage-type punning
+
+	// struct Vec4{
+	// 	union{
+	// 		struct{int x,y,a,b;}; //one member all next members will have same memory size
+
+	// 		struct{Vec2 j,k;}; // So here j=x,y and k=a,b
+	// 	};
+	// };
+
+	// Vec4 v={1,2,3,4};
+	// cout<<v.x<<" "<<v.y<<" "<<v.a<<" "<<v.b<<endl;
+	// print(v.j);print(v.k);
+
+		/* OUTPUT */
+  /***************************
+	
+	1 2 3 4
+	1 2
+	3 4
+
+  ***************************/	
+
+	//virtual destructors-issue is when we make base* and allocate derived object
+	//it doesn't call derived destructor resulting in memory leak
+	// To fix this we should make base class destructor virtual
+
+	// A* d=new B();
+	// delete d; 
+
+		/* OUTPUT */
+  /***************************
+	
+	Base Constructor
+	Derived Constructor
+	Derived Destructor
+	Base Destructor
+
+  ***************************/	
+
+	//Casting-
+	// float a=5.3;
+	// int b=(int)a; //c-style casting
+	// cout<<b<<endl; //5
+
+	// // C++ cast-static,dynamic,reinterpret,const
+	// int c=static_cast<int>(a);
+	// cout<<b<<endl; //5
 
 
 
