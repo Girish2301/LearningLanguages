@@ -252,15 +252,29 @@ void print(Vec2 &v){
 
 class A{
 public:
-	A(){cout<<"Base Constructor"<<endl;}
-	virtual ~A(){cout<<"Base Destructor"<<endl;}
+	virtual void Hello(){};
+	// A(){cout<<"Base Constructor"<<endl;}
+	// virtual ~A(){cout<<"Base Destructor"<<endl;}
 };
 class B:public A{
 public:
-	B(){cout<<"Derived Constructor"<<endl;}
-	~B(){cout<<"Derived Destructor"<<endl;}
+	// B(){cout<<"Derived Constructor"<<endl;}
+	// ~B(){cout<<"Derived Destructor"<<endl;}
 };
 
+class C:public A{
+public:
+};
+
+optional<string> Read(string path){
+	ifstream stream(path);
+	if(stream){
+		string result="read";
+		stream.close();
+		return result;
+	}
+	return {};
+}
 int main(){ //entry point
 	// main function special case no need to return any value
 
@@ -1077,6 +1091,64 @@ int main(){ //entry point
 	// // C++ cast-static,dynamic,reinterpret,const
 	// int c=static_cast<int>(a);
 	// cout<<b<<endl; //5
+
+	//Dynamic casting-evaluated at runtime by RTI like inheritance heirarchy checking
+	//Example- A ->B,C
+	// A* b=new B();
+	// A* c=new C(); 
+
+	// B* p0=dynamic_cast<B*>(b);
+	// B* p1=dynamic_cast<B*>(c);
+
+	// cout<<(p0?"P0 hai\n":"NULL\n"); //p0 hai is due to inheritance checking
+	// cout<<(p1?"P1 hai\n":"NULL\n"); //NULL is due to inheritance checking
+
+	//Structured Bindings[]-using it with tuple is powerful
+
+	// tuple<string,int> person={"girish",21};
+	// string name;int age;
+	// tie(name,age)=person; // dereference it into multiple variables
+	// cout<<name<<" "<<age<<endl;
+
+	// auto[x,y]=person; //C++ 17 version
+	// cout<<x<<" "<<y<<endl;
+
+			/* OUTPUT */
+  /***************************
+	
+	girish 21
+	girish 21
+
+  ***************************/	
+
+	//Optional-to check whether exists or not and give default value
+
+	// optional<string> x=Read("D:\\code\\input.in");
+	// cout<<x.value_or("NULL")<<endl;
+
+			/* OUTPUT */
+  /***************************
+	
+	read
+
+  ***************************/	
+
+	//Variant-variable with multiple types
+
+	// variant<string,int,float> v=23;
+	// cout<<get<int>(v)<<endl;
+	// v="girish";
+	// cout<<get<string>(v)<<endl;
+
+			/* OUTPUT */
+  /***************************
+	
+	23
+	girish
+
+
+  ***************************/
+
 
 
 
