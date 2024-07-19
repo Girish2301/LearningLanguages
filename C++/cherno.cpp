@@ -275,6 +275,211 @@ optional<string> Read(string path){
 	}
 	return {};
 }
+
+vector<future<void>> futures; // required to store async fns
+static mutex m; //for locking resources
+static void printdata(vector<long long> &data,long long i){
+	lock_guard<mutex> lock(m);
+	long long go_till=i+10;
+	for(long long x=i;x<go_till;x++){
+		cout<<data[x]<<" ";
+	}
+	//unlocks mutex after every iteration
+}
+
+static uint32_t allocations=0;
+void* operator new(size_t size){
+	allocations++;
+	return malloc(size);
+}
+
+// Hardcore Profiling-
+
+#define PROFILE_SCOPE(name) InstrumentTimer timer##__LINE__(name)
+#define PROFILE_FUNC() PROFILE_SCOPE(__FUNCTION__);
+struct ProfileResult
+{
+    string Name;
+    long long Start, End;
+    uint32_t ThreadID;
+};
+
+struct InstrumentationSession
+{
+    std::string Name;
+};
+
+class Instrumentor
+{
+private:
+    InstrumentationSession* m_CurrentSession;
+    std::ofstream m_OutputStream;
+    int m_ProfileCount;
+public:
+    Instrumentor()
+        : m_CurrentSession(nullptr), m_ProfileCount(0)
+    {
+    }
+
+    void BeginSession(const std::string& name, const std::string& filepath = "results.json")
+    {
+        m_OutputStream.open(filepath);
+        WriteHeader();
+        m_CurrentSession = new InstrumentationSession{ name };
+    }
+
+    void EndSession()
+    {
+        WriteFooter();
+        m_OutputStream.close();
+        delete m_CurrentSession;
+        m_CurrentSession = nullptr;
+        m_ProfileCount = 0;
+    }
+
+    void WriteProfile(const ProfileResult& result)
+    {
+        if (m_ProfileCount++ > 0)
+            m_OutputStream << ",";
+
+        std::string name = result.Name;
+        std::replace(name.begin(), name.end(), '"', '\'');
+
+        m_OutputStream << "{";
+        m_OutputStream << "\"cat\":\"function\",";
+        m_OutputStream << "\"dur\":" << (result.End - result.Start) << ',';
+        m_OutputStream << "\"name\":\"" << name << "\",";
+        m_OutputStream << "\"ph\":\"X\",";
+        m_OutputStream << "\"pid\":0,";
+        m_OutputStream << "\"tid\":" << result.ThreadID << ",";
+        m_OutputStream << "\"ts\":" << result.Start;
+        m_OutputStream << "}";
+
+        m_OutputStream.flush();
+    }
+
+    void WriteHeader()
+    {
+        m_OutputStream << "{\"otherData\": {},\"traceEvents\":[";
+        m_OutputStream.flush();
+    }
+
+    void WriteFooter()
+    {
+        m_OutputStream << "]}";
+        m_OutputStream.flush();
+    }
+
+    static Instrumentor& Get()
+    {
+        static Instrumentor instance;
+        return instance;
+    }
+};
+
+
+class InstrumentTimer{
+	const char* m_name;
+	bool m_stop;
+	chrono::time_point<chrono::high_resolution_clock> m_start;
+public:
+	InstrumentTimer(const char* name):m_name(name),m_stop(false){
+		m_start=chrono::high_resolution_clock::now();
+	}
+	void stop(){
+		auto m_end=chrono::high_resolution_clock::now();
+		long long start = chrono::time_point_cast<chrono::microseconds>(m_start).time_since_epoch().count();
+        long long end = chrono::time_point_cast<chrono::microseconds>(m_end).time_since_epoch().count();
+		// cout<<m_name<<":"<<end-start<<endl;
+		uint32_t threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
+		Instrumentor::Get().WriteProfile({m_name,start,end,threadID}); 
+		m_stop=true;
+	}
+	~InstrumentTimer(){
+		if(!m_stop)stop();
+	}
+};	
+
+void print_hello(){
+	PROFILE_FUNC();
+	for(int i=0;i<1000;i++){
+		cout<<"Hello: "<<i<<endl;
+	}
+}
+
+void sqrt_hello(){
+	PROFILE_FUNC();
+	for(int i=0;i<1000;i++){
+		cout<<"Hello: "<<sqrt(i)<<endl;
+	}
+}
+
+void benchmark(){
+	PROFILE_FUNC();
+	cout<<"Running Benchmarks:"<<endl;
+	thread a([](){print_hello();});
+	thread b([](){sqrt_hello();});
+	a.join();
+	b.join();
+}
+
+class Random{
+private:
+	static Random m_instance;
+	Random(){}
+public:
+	static Random& Get(){
+		static Random m_instance;
+		return m_instance;
+	}
+
+	Random(const Random&)=delete;
+	int random(int lb,int ub){
+		srand(time(0));
+		return rand() % (ub - lb + 1)+lb;
+	}
+};
+
+class String{
+	char *name;
+	uint32_t size;
+public:
+	String()=default;
+	String(const char *data){
+		cout<<"String Created"<<endl;
+		size=strlen(data);
+		name=new char[size];
+		memcpy(name,data,size);
+	}
+	String(const String& data){
+		cout<<"String Copied"<<endl;
+		size=data.size;
+		name=new char[size];
+		memcpy(name,data.name,size);
+	}
+	void Print(){
+		for(uint32_t i=0;i<size;i++)
+			printf("%c",name[i]);
+		printf("\n");
+	}
+	~String(){
+		cout<<"String Destroyed"<<endl;
+		delete name;
+	}
+
+};
+
+class Human{
+	String name;
+public:
+	Human(const String &data):name(data){}
+	Human(String&& other):name(other){ } //calls move constructor of String
+	void PrintName(){
+		name.Print();
+	}
+};
+
+
 int main(){ //entry point
 	// main function special case no need to return any value
 
@@ -1149,12 +1354,97 @@ int main(){ //entry point
 
   ***************************/
 
+	//Any-store any datatype but store large datatype dynamically,reducing performance
+
+	// any a=make_any<int>(23);
+	// cout<<*any_cast<int>(&a)<<endl;
+	// a=make_any<string>("girish");
+	// cout<<*any_cast<string>(&a)<<endl;
+
+			/* OUTPUT */
+  /***************************
+	
+	23
+	girish
 
 
+  ***************************/
 
+	//Async-run programs on threads
 
+	// vector<long long> data(10000000);
+	// for(int i=0;i<10000000;i++){data[i]=i;}
+	// for(int i=0;i<10000000;i+=10){
+	// 	//futures need to be maintained to store async fns bcoz destroyed after every iteration
+	// 	futures.push_back(async(launch::async,printdata,ref(data),i));
+	// }
 
+	// for(auto &f:futures){
+	// 	f.get(); //ensures all async fns are done executing
+	// }
 
+	//Faster Strings-
+	//strings and its operation like =,substr() allocate memory dynamically,reducing performance
+
+	//stringview-it doesn't allocate new memory,instead look into existing memory
+
+	// string name="Girish Kumar";
+	// string_view firstName(name.c_str(),6);
+	// string_view lastName(name.c_str()+7,5);
+
+	// cout<<firstName<<"\n"<<lastName;
+
+			/* OUTPUT */
+  /***************************
+	
+	Girish
+	Kumar
+
+  ***************************/
+
+	// Visual Benchmarking-using browser tracing
+	// Instrumentor::Get().BeginSession("Profile");
+	// benchmark();
+	// Instrumentor::Get().EndSession();
+
+	//Singletons-single instance of class
+	// cout<<Random::Get().random(2,10);
+
+	//Small String Optimization-15 or less char strings allocated in stack instead of heap
+
+	//lvalues and rvalues-
+	// const int& x=10;
+	// cout<<x<<endl;
+
+	// &&-lvalue reference only accepts temp rvalues
+	// int a=5;
+	// int c=6;
+	// int &&d=a; //gives error
+	// int&& b=(a+c);
+
+	//Argument evaluation order- undefined
+	// Postfix expression evaluated in sequence but asc/desc order
+
+	// int a=0;
+	// cout<<a++<<++a<<endl; //warning undefined behaviour
+	
+	//Move semantics-
+	// Human h(String("Girish"));
+	// h.PrintName();
+
+			/* OUTPUT */
+  /***************************
+	//without lvalue reference extra copy is generated
+	String Created
+	String Copied
+	String Destroyed
+	Girish
+	String Destroyed
+
+  ***************************/
+
+	Human h(String("Girish"));
+	h.PrintName();
 
 
 }
