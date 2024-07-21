@@ -445,22 +445,46 @@ class String{
 	uint32_t size;
 public:
 	String()=default;
+
 	String(const char *data){
 		cout<<"String Created"<<endl;
 		size=strlen(data);
 		name=new char[size];
 		memcpy(name,data,size);
 	}
+
 	String(const String& data){
 		cout<<"String Copied"<<endl;
 		size=data.size;
 		name=new char[size];
 		memcpy(name,data.name,size);
 	}
+
+	String(String&& data) noexcept{ //move constructor
+		cout<<"String Moved"<<endl;
+		size=data.size;
+		name=data.name; //just moving pointer
+
+		data.size=0;
+		data.name=NULL; //to be done as it calls destructor leading to data loss
+	}
+
 	void Print(){
 		for(uint32_t i=0;i<size;i++)
 			printf("%c",name[i]);
 		printf("\n");
+	}
+
+	String& operator=(String&& other){
+		if(this!=&other){
+			cout<<"String Moved"<<endl;
+			delete[] name; //delete existing data if it exists
+			size=other.size;
+			name=other.name;
+			other.size=0;
+			other.name=NULL; 
+		}
+		return *this;
 	}
 	~String(){
 		cout<<"String Destroyed"<<endl;
@@ -473,12 +497,180 @@ class Human{
 	String name;
 public:
 	Human(const String &data):name(data){}
-	Human(String&& other):name(other){ } //calls move constructor of String
+	Human(String&& other):name((String&&)other){ } //calls move constructor of String
 	void PrintName(){
 		name.Print();
 	}
 };
 
+template<typename Vector>
+class VectorIterator{
+
+public:
+	using valueType=typename Vector::valueType;
+	using PointerType=valueType*;
+	using RefType=valueType&;
+
+private:
+	PointerType ptr;
+
+public:
+	VectorIterator(PointerType p):ptr(p){}
+
+	VectorIterator& operator++(){
+		ptr++;
+		return *this;
+	}
+
+	VectorIterator operator++(int){
+		VectorIterator it=*this;
+		++(*this);
+		return it;
+	}
+
+	VectorIterator& operator--(){
+		ptr--;
+		return *this;
+	}
+
+	VectorIterator operator--(int){
+		VectorIterator it=*this;
+		--(*this);
+		return it;
+	}
+
+	RefType operator[](int index){
+		return *(ptr+index);
+	}
+
+	PointerType operator->(){
+		return ptr;
+	}
+
+	RefType operator*(){
+		return *ptr;
+	}
+
+	bool operator==(const VectorIterator& other) const{
+		return ptr==other.ptr;
+	}
+
+	bool operator!=(const VectorIterator& other) const{
+		return !(*this==other);
+	}
+
+};
+
+template<typename T>
+class Vector{
+	T* data=nullptr;
+	size_t size=0;
+	size_t capacity=0;
+
+	void ReAlloc(int new_capacity){
+		// T* new_data=new T[new_capacity]; //this calls destructors
+		// T* new_data=(T*)::operator new(new_capacity*sizeof(T));
+		T* new_data=static_cast<T*>(::operator new(new_capacity*sizeof(T)));
+		
+		if(new_capacity<size)size=new_capacity;
+		for(size_t i=0;i<size;i++){
+			// new_data[i]=move(data[i]);
+			new (&new_data[i]) T(std::move(data[i]));
+			data[i].~T();
+		}
+
+		// delete[] data;
+		::operator delete(data,capacity*sizeof(T));
+
+		data=new_data;
+		capacity=new_capacity;
+	}
+
+public:
+	using valueType=T;
+	using iterator=VectorIterator<Vector<T>>;
+
+	Vector():size(0),capacity(2){
+		ReAlloc(2);
+    }
+
+	void push_back(const T& value){
+		if(size>=capacity)ReAlloc(capacity+capacity/2); //1.5x
+		data[size]=value;
+		size++;
+	}
+
+	void push_back(T&& value){
+		if(size>=capacity)ReAlloc(capacity+capacity/2); //1.5x
+		// data[size]=move(value);
+		new(&data[size])T(value); 
+		size++;
+	}
+
+	template<typename ...args>
+
+	T& emplace_back(args&&... a){ //takes list of args
+		if(size>=capacity)ReAlloc(capacity+capacity/2); //1.5x
+
+		new(&data[size])T(forward<args>(a)...); //inplace data
+
+		// ... for unpacking and storing indefinite arguments
+		// data[size]=T(forward<args>(a)...); //move
+		return data[size++];
+	}
+
+	const T& operator[](size_t index)const{
+		if(index>=size)return throw std::out_of_range("Index out of range");
+		return data[index];
+	}
+
+	T& operator[](size_t index){
+		if(index>=size)return throw std::out_of_range("Index out of range");
+		return data[index];
+	}
+
+	void print(){
+		for(int i=0;i<size;i++){
+			cout<<data[i]<<" ";
+		}
+		cout<<endl;
+	}
+
+	void pop_back(){
+		if(size>0){
+			size--;
+			data[size].~T();
+		}
+	}
+
+	void clear(){
+		for(size_t i=0;i<size;i++)
+			data[i].~T();
+		size=0;
+	}
+
+	size_t my_size()const{return size;}
+
+	~Vector(){
+		clear();
+		// delete[] data; // this calls destructors
+		:: operator delete(data,capacity*sizeof(T));
+	}
+
+	iterator begin(){
+		return iterator(data);
+	}
+
+	iterator end(){
+		return iterator(data+size);
+	}
+
+};
+
+class orange{
+public:
+	operator float(){return 5.5f;}
+};
 
 int main(){ //entry point
 	// main function special case no need to return any value
@@ -1443,9 +1635,174 @@ int main(){ //entry point
 
   ***************************/
 
-	Human h(String("Girish"));
-	h.PrintName();
+	// Human h(String("Girish"));
+	// h.PrintName();
+
+			/* OUTPUT */
+  /***************************
+	//with lvalue reference data is only moved
+	String Created
+	String Moved
+	String Destroyed
+	Girish
+	String Destroyed
 
 
+  ***************************/	
+
+	//move()- moves lvalue reference to other variable
+
+	// String s="Helo";
+	// String t(move(s));
+
+			/* OUTPUT */
+  /***************************
+	String Created
+	String Moved
+	String Destroyed
+	String Destroyed
+
+  ***************************/
+
+	//Own Vector-
+
+	// Vector<string,2> v;
+	// v.push_back("Girish");
+	// v.push_back("kumar");
+	// v.push_back("codes");
+	// v.emplace_back("hello");
+	// v.print();
+	// cout<<v.my_size()<<endl;
+
+			/* OUTPUT */
+  /***************************
+	Girish kumar codes hello 
+	4
+
+  ***************************/
+
+	//Iterators-
+
+	// vector<int> v={1,2,3,5};
+	// for(vector<int>::iterator it=v.begin();it!=v.end();it++){
+	// 	cout<<*it<<" ";
+	// }
+
+			/* OUTPUT */
+  /***************************
+	1 2 3 5 
+
+  ***************************/
+
+	// Own Vector Iterator-
+
+	// Vector<string> v;
+	// v.push_back("Girish");
+	// v.push_back("kumar");
+	// v.push_back("codes");
+	// v.emplace_back("hello");
+
+	// for(Vector<string>::iterator it=v.begin();it!=v.end();it++){
+	// 	cout<<*it<<endl;
+	// }
+
+			/* OUTPUT */
+  /***************************
+	Girish
+	kumar
+	codes
+	hello
+
+  ***************************/	
+
+	// Memory storage in stack-
+	// Example-int a=5; 
+	// 4 byte memory is represented as 00 00 00 00.in hex form 
+	// Every byte/0 is 0-15.
+	//a=05 00 00 00 will be its memory representation form.
+
+	// Bitwise Operators-
+
+	// Internal conversion happens for <<,>> as if used *=2**n or /2**n
+	// cout<<(5<<1); //10 bcoz <<-*2**n 
+	// cout<<(5>>1); //2 bcoz >>-/2**n 
+
+	//$-both expressions are true(0 and 1)
+	// cout<<(0&1); //0
+	
+	//|-both expressions are true(0 and 1)
+	// cout<<(0|1) //1
+
+	//!-changes 0 to 1 and vice versa
+	// cout<<(!0); //1
+
+	//^-if both bits are different or not
+	// cout<<(0b1010^0b1000); //2 bcoz 2nd bit is different only,so 0b0010 result
+
+	//Map-sorted map (red-black tree)
+
+	// map<string,int> mp;
+	// mp["b"]=1;
+	// mp["a"]=3;
+	// mp["c"]=2;
+	// for(auto [x,y]:mp){
+	// 	cout<<x<<" "<<y<<endl;
+	// }
+
+			/* OUTPUT */
+  /***************************
+	a 3
+	b 1
+	c 2
+
+  ***************************/	
+
+	//Unordered_Map-hash table and not sorted
+
+	// unordered_map<string,int> mp;
+	// mp["b"]=1;
+	// mp["a"]=3;
+	// mp["c"]=2;
+	// for(auto [x,y]:mp){
+	// 	cout<<x<<" "<<y<<endl;
+	// }
+
+			/* OUTPUT */	
+  /***************************
+	c 2
+	a 3
+	b 1
+
+  ***************************/
+
+	//C++ Project Architecture-
+	// Premake-to generate make files and any project files,uses lua
+	//Cmake/Makefile-acts as custom build system
+	//Core lib->GUI lib/other libs->apps
+
+	//Conversion Operators- convert datatypes
+	// orange o;
+	// float f=o; //calls orange::float() for conversion
+	// cout<<f<<endl;
+
+			/* OUTPUT */	
+  /***************************
+	5.5
+
+  ***************************/
+
+	//Weak Pointers-used generally with shared pointers
+	// It doesn't increase reference count as it makes weak reference
+	// so instance of shared pointer destroyed whenever reference count becomes 0
+	
+	// weak_ptr<string> w;
+	// {
+	// 	shared_ptr<string> s=make_shared<string>("Girish");
+	// 	w=s;
+	// 	cout<<(*w.lock())<<endl; //lock() returns shared_ptr assigned
+	// }
+	// cout<<w.expired()<<endl; //expired as shared_ptr died at end of scope
+
+	// Completed
 }
 #endif
