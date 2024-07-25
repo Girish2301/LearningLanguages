@@ -24,8 +24,8 @@ girish
 ***************************/
 
 // var-globally scoped,redeclaration,default is undefined
-// let-local scoped,no redeclaration
-//const-local scoped,no redeclearation and redefinition
+// let-local scoped,no redeclaration and redefinition
+//const-local scoped,no redeclearation and no redefinition
 
 // let b=23;
 // let b="girish"; //throws error bcoz of reclaration
@@ -54,3 +54,195 @@ girish
 {Girish: 23, hisoka: 'hi'}
 
 ***************************/
+
+//Practice-
+
+//Q1-Concatenation
+// let a="Girish";
+// let b=5;
+// console.log(a+b);
+//Output-Girish5
+
+//Q2-Find Type
+// let x="Girish";
+// console.log(typeof x);
+//Output-string
+
+//Q3-Changing value in const object
+// const obj={'HI':undefined};
+// obj['HI']=23;
+// console.log(obj['HI']);
+//Output-23
+
+//Q5-dictionary of 5 words
+// const dict={'hi':1,'bye':2,'cry':3,'shy':4,'my':5};
+// console.log(dict.bye); 
+//Output-2
+
+// Expressions-are reserved keywords and literals which act as program itself
+// console.log(!true); //true is exp
+// 7;// 7 itself as program/expression
+
+//Operators-
+//Arithmetic Operators-+,-*,/,++,--,**,%
+// let a=5,b=2;
+// console.log(a+b);
+// console.log(a-b);
+// console.log(a/b);
+// console.log(a*b);
+// console.log(a**b); //power
+// console.log(a%b); //remainder
+// console.log(++a);
+
+    /* OUTPUT */
+/***************************
+
+7
+3
+2.5
+10
+25
+1
+6
+
+***************************/
+
+//Assignment Operators-=,+=,-=,/=,*=,**=
+// let a=5,b=2;
+// console.log(a+=b);
+// console.log(a-=b);
+// console.log(a/=b);
+// console.log(a*=b);
+// console.log(a**=b);
+// console.log(a%=b); //a is updated everytime bcoz it performs and then assigns
+
+    /* OUTPUT */
+/***************************
+
+7
+5
+2.5
+5
+25
+1
+
+***************************/
+
+//Comparison Operators-==,!=,>,<,>=,<=,?:
+// let a=5,b=2;
+// console.log(a==b);
+// console.log(a!=b);
+// console.log(a>b);
+// console.log(a<b);
+// console.log(a>=b);
+// console.log(a<=b);
+// console.log(a==5?a:b);
+// console.log(a==="5"); //check also its type which == doesn't consider
+// console.log(a!=="5");
+
+    /* OUTPUT */
+/***************************
+
+false
+true
+true
+false
+true
+false
+5
+false
+true
+
+***************************/
+
+// Logical Operators-&&,||,!
+// console.log(true && true); //both conditions should be true for true
+// console.log(true && false);
+// console.log(true || true); //any condition should be true for true
+// console.log(true || false);
+// console.log(!false);
+
+    /* OUTPUT */
+/***************************
+
+true
+false
+true
+true
+true
+
+***************************/
+
+// Conditional Expressions-
+// if-runs whenever true
+// else if-if runs fails then comes here 
+// else- runs whenever else if and if fails
+
+// let a=5;
+// if(a==5)console.log('a is 5');
+// else if(a==6)console.log('a is 6')
+// else console.log('a!=5 and a!=6');
+
+    /* OUTPUT */
+/***************************
+
+a is 5
+
+***************************/
+
+// Prompt()-Shows a window to take input and input type is always string
+// let x=prompt("Enter x: ")
+// Alert()-shows message in dialog box
+// alert("Value of x: "+x)
+
+    /* OUTPUT */
+/***************************
+
+value entered 234
+Value of x: 234
+
+***************************/
+
+//Swtich case-
+
+// let a=5;
+
+// switch(a){
+//     case 1:
+//         console.log('1');
+//     case 2:
+//         console.log('2');
+//     case 5:
+//         console.log('5');
+//     default:
+//         console.log('i will run if not broken above');
+// }
+
+    /* OUTPUT */
+/***************************
+
+5
+i will run if not broken above
+
+***************************/
+
+//Practice-    
+        
+//Q1-Find age b/w 10 and 20 or not
+
+// let a=prompt('Enter Age');
+// a=Number.parseInt(a);
+// console.log(a>=10 && a<=20?a:'Invalid');
+//Output-15
+
+//Q2-Divisible by 2 and 3
+// let a=prompt('Enter Value')
+// a=Number.parseInt(a)
+// console.log(!(a%2) && !(a%3)?a:'Not by 2 and 3')
+//Output- 6
+
+//Q3-Drive or No Drive based on age<18
+// let age=21;
+// console.log(age<18?'No Drive':'Drive');
+//Output-Drive
+
