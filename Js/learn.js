@@ -246,3 +246,106 @@ i will run if not broken above
 // console.log(age<18?'No Drive':'Drive');
 //Output-Drive
 
+//Loops-
+
+// for loop-runs for x no. of times
+// for(let i=0;i<5;i++)console.log(i);
+
+    /* OUTPUT */
+/***************************
+
+0
+1
+2
+3
+4
+
+***************************/
+
+// for in loop- iterates over keys/index similiar to for loop
+// let a=[1,2,3,5];
+// for(let x in a)console.log(Number.parseInt(a[x]));
+
+    /* OUTPUT */
+/***************************
+
+1
+2
+3
+5
+
+***************************/
+
+// for of loop- iterates over object/iterables
+// let a=[2,5,3,4];
+// for( let x of a)console.log(x);
+
+    /* OUTPUT */
+/***************************
+
+2
+5
+3
+4
+
+***************************/
+
+//while loop- runs till condition is true
+// let a=1;
+// while(a<5)console.log(a++);
+
+    /* OUTPUT */
+/***************************
+
+1
+2
+3
+4
+
+***************************/
+
+// do while loop- it runs once nonetheless then checks condition everytime
+// let a=1;
+// do{
+//     console.log(a++);
+// }while(a<=5);
+
+    /* OUTPUT */
+/***************************
+
+1
+2
+3
+4
+5
+
+***************************/
+
+//Functions-resuable code to run programs on different values
+
+// function avg(a,b){
+//     console.log((a+b)/2);
+// }
+
+// avg(5,2);
+// avg(3,6);
+
+    /* OUTPUT */
+/***************************
+
+3.5
+4.5
+
+***************************/
+
+
+
+
+
+
+
+
+
+
+
+
