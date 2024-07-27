@@ -338,6 +338,194 @@ i will run if not broken above
 
 ***************************/
 
+// Iterating Object values
+// let marks={"girish":23,"manish":21,"hisoka":20};
+
+// for(let i=0;i<Object.keys(marks).length;i++){
+//     console.log(marks[Object.keys(marks)[i]]);
+// }
+
+    /* OUTPUT */
+/***************************
+
+23
+21
+20
+
+***************************/
+
+//Strings-'',"" to store text
+// let x="Girish";
+// console.log(x); //Girish
+
+//Template literals-we can use '',"" within `` string
+// let a="Girish",b="coder";
+// console.log(`${a} "is" 'a' ${b}`);
+//Output-Girish "is" 'a' coder
+
+// Escape sequence characters-use \ before every character
+// console.log('Author\'s name is Girish ');
+//Output-Author's name is Girish
+
+//String Methods-
+// let x="Hello\' World" 
+// console.log(x.length); //12 bcoz escape char not counted
+
+// let a="girish";
+// console.log(a.toUpperCase()); //GIRISH
+// console.log(a.slice(1,3)); //ir
+// a=a.replace("girish","harish");
+// console.log(a); //harish
+// console.log(a.concat(" kumar")); //girish kumar
+// console.log(`name ${a.includes('ir')?'has ir':' has not ir'} in ${a}`);
+//Output-name has ir in girish
+
+// let money="please extract Rs 5000"
+// let amount=Number.parseInt(money.slice("please extract Rs ".length))
+// console.log(amount); //5000
+
+// let b="hisoka";
+// b[2]='r'; //doesn't work as string is immutable
+// console.log(b);
+
+//Arrays-collection of different variables with different dtypes
+
+// let a=[12,'girish',false,52.2];
+// a[4]='hisoka';
+// console.log(a); //[ 12, 'girish', false, 52.2, 'hisoka' ]
+
+// let a=[1,2,3];
+// console.log(a.toString()); //1,2,3
+// console.log(a.join('-')); //1-2-3 makes str
+
+// console.log(`Popped element: ${a.pop()} and updated arr:${a}`);
+//Output-Popped element: 3 and updated arr:1,2
+
+// console.log(`Pushed element: ${a.push(4)} and updated arr:${a}`);
+//Output-Pushed element: 4 and updated arr:1,2,3,4
+
+// console.log(`Shifted element: ${a.shift()} and updated arr:${a}`);
+//Output-Shifted element: 1 and updated arr:2,3
+
+// console.log(`UnShifted element: ${a.unshift(0)} and updated arr:${a}`);
+//Output-UnShifted element: 4 and updated arr:0,1,2,3
+
+// console.log(a.concat([4,5],[6,7])); 
+//Output-[1, 2, 3, 4,5, 6, 7]
+
+// console.log(a.sort()); //mofifies original array and sorts alphabetically
+//Output- [ 1, 2, 3 ]
+
+// console.log(a.reverse()); //[ 3, 2, 1 ]
+
+// a.splice(1,1,10,11,12) //deletes and replace from pos and count and returns deleted values
+// console.log(a); //[ 1, 10, 11, 12, 3 ]
+
+//Loops and arrays-
+// let a=[23,63,74,98];
+
+// for(let i=0;i<a.length;i++){
+//     console.log(a[i]);
+// }
+
+// for(let x in a){
+//     console.log(a[x]);
+// }
+
+// a.forEach((x)=>{
+//     console.log(x);
+// });
+
+// for(let x of a){
+//     console.log(x);
+// }
+    /* OUTPUT */
+/***************************
+
+23
+63
+74
+98
+
+***************************/
+
+// let z={'hi':12,'bye':23};
+// let b=Array.from(Object.keys(z)); //makes array from any other object 
+// console.log(b); // [ 'hi', 'bye' ]
+
+//Map-creates a new array based on fn
+// let b=[12,53,62,24];
+// let c=b.map((val,i,b)=>{return val*val;});
+// console.log(c); //[ 144, 2809, 3844, 576 ]
+
+//Filter-
+// let a=[1,2,3,4,5,6];
+// console.log(a.filter((val,i,array)=>{
+//     return val>3;
+// })); // [ 4, 5, 6 ]
+
+//Reduce-runs fn on x parameters and returns single value
+// let a=[1,2,3,4];
+// console.log(a.reduce((x,y)=>{return x*y;})); //24
+
+//Guess Number Game-
+
+// let chances=100;
+// let answer=Math.floor(Number.parseInt(Math.random()*100)); //0-99
+// let won=false;
+// while(chances){
+//     let choice=prompt("Enter Value:");
+//     if(answer==Number.parseInt(choice)){
+//         console.log("!!!Correct Guess!!! You Won with "+chances+" score");
+//         won=true;
+//         break;
+//     }
+//     else{
+//         console.log("Incorrect Guess :( Retry Again");
+//     }
+//     chances--;
+// }
+// if(!won)console.log("OOPS! Ran Out Of Luck");
+
+//Console Object-
+// console.assert(5>6);
+// console.assert(55>6); //checks condition and returns error if failed else undefined
+// console.clear(); //clears console
+// let obj={'a':1,'b':2,'c':3};
+// console.table(obj);
+
+    /* OUTPUT */
+/***************************
+
+┌─────────┬────────┐
+│ (index) │ Values │
+├─────────┼────────┤
+│ a       │ 1      │
+│ b       │ 2      │
+│ c       │ 3      │
+└─────────┴────────┘
+
+***************************/
+
+console.time("a"); //starts timer
+console.warn('Don\'t use bankai'); //creates warning
+console.error('Bankaiiiiiiiii'); //creates error
+console.info('Bleach is good anime'); //creates info
+console.timeEnd("a"); //ends timer and returns difference //a: 0.320068359375 ms
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
