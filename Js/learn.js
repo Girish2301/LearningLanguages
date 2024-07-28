@@ -507,25 +507,68 @@ i will run if not broken above
 
 ***************************/
 
-console.time("a"); //starts timer
-console.warn('Don\'t use bankai'); //creates warning
-console.error('Bankaiiiiiiiii'); //creates error
-console.info('Bleach is good anime'); //creates info
-console.timeEnd("a"); //ends timer and returns difference //a: 0.320068359375 ms
+// console.time("a"); //starts timer
+// console.warn('Don\'t use bankai'); //creates warning
+// console.error('Bankaiiiiiiiii'); //creates error
+// console.info('Bleach is good anime'); //creates info
+// console.timeEnd("a"); //ends timer and returns difference //a: 0.320068359375 ms
 
+//Confirm-default dialog box to get true on ok false on cancel
+// let a=confirm("Do you want to Print Hello");
+// console.log(a?"Hello World":"Nothing"); //Output-Hello World
 
+//Window-global object every feature comes under it
+// DOM- whole html page is made a js object(document)
+// BOM- host environment additional objects are provided from it
 
+//Redirect to google if num==4 
+// let num=prompt("Enter Number")
+// num=Number.parseInt(num);
+// num==4?location.href="https://www.google.com":console.log("Nothing Happened"); //works fine
 
+//Change background color on user prompt
+// let colour=prompt("Enter Color:")
+// document.body.style.background=colour;
 
+//Snake,Water and Gun Game-
+// let options=['S','W','G']
+// while(true){
+//     let choice=prompt("Enter S for Snake,W for water,G for Gun");
+//     let pc_choice=Number.parseInt(Math.random().toFixed(0))+Number.parseInt(Math.random().toFixed(0));
+//     pc_choice=options[pc_choice];
+//     switch(choice){
+//         case 'S':
+//             if(pc_choice=='W'){
+//                 console.log("You Win By Drinking Water");
+//             }else if(pc_choice=='S'){
+//                 console.log("You Tied in fighting with snake");
+//             }else{
+//                 console.log("You Lose bcoz Your snake shot by gun");
+//             }break;
+//         case 'W':
+//             if(pc_choice=='W'){
+//                 console.log("You Tied by merging with another water");
+//             }else if(pc_choice=='S'){
+//                 console.log("You Lose bcoz snake drank you");
+//             }else{
+//                 console.log("You Win by dissolving Gun");
+//             }break;
+//         case 'G':
+//             if(pc_choice=='W'){
+//                 console.log("You Lose bcoz you went under the water");
+//             }else if(pc_choice=='S'){
+//                 console.log("You Win by shooting snake");
+//             }else{
+//                 console.log("You Tied by shooting at other shooter");
+//             }break;
+//         default:
+//             console.log("Invalid Choice! Check Rules");
+//     };
+//     let retry=confirm("Do You Want To Play Again");
+//     if(!retry)break;
+// }
 
-
-
-
-
-
-
-
-
+// DOM Types of nodes-Text,Elements,Comment Nodes
 
 
 
