@@ -570,6 +570,44 @@ i will run if not broken above
 
 // DOM Types of nodes-Text,Elements,Comment Nodes
 
+// DOM Tree-html(document.documentElement)->head(document.head)/body(document.body)
+// scripts in head tag don't have access to body tag elements
+//'\n' character considered as text node in html
+
+// console.log(document.firstChild); //Girish of p tag
+// console.log(document.lastChild); //Kumar of p tag
+// console.log(document.hasChildNodes()); //true
+// console.log(document.childNodes); //returns Nodeslist which can be converted to array
+
+//DOM COllections- read only,updates in realtime,iterable using loops
+// $0-recent Element,$1-previous accessed Element
+
+// console.log(document.head.parentNode); //gives parent node html
+// console.log(document.head.parentElement); //gives parent element if there is element
+// console.log(document.body.firstElementChild); //gives first element Girish
+// console.log(document.body.children); //gives all chlld elements
+
+// DOM Search Functions- document.getElementById(),document.getElementsByClassName(),document.getElementsByTagName(),document.getElementsByName()
+//By CSS Selectors- document.querySelectorAll(),document.querySelector()
+// document.body.matches(); // gives css selector exist or not
+// document.body.closest(); // gives closest css selector to given css selector
+// document.body.contains(); // gives element contains given css selector or not
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
