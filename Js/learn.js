@@ -593,7 +593,71 @@ i will run if not broken above
 // document.body.closest(); // gives closest css selector to given css selector
 // document.body.contains(); // gives element contains given css selector or not
 
+// console.dir(document.getElementsByTagName('p')[0]); //show objects with its properties
 
+//tag name- only takes element nodes
+
+//innerHTML-gives inner content of element node
+// console.log(document.getElementById('my_span').innerHTML);
+//Output-Hum Span hai
+
+//outerHTML-gives whole content including element of node as string
+// console.log(document.getElementById('my_span').outerHTML);
+//Output-<span id="my_span">Hum Span hai</span>
+
+// console.log(document.body.textContent); //gives text content of all elements inside it 
+
+    /* OUTPUT */
+/***************************
+
+Girish
+Hum Span hai
+Kumar
+
+***************************/
+
+//hidden property of element to hide/show it.
+
+// let element=document.getElementById("first");
+
+// console.log(element.getAttribute("id")); //get any attribute of elements //Output-first
+
+// console.log(element.hasAttribute("class")); //true
+
+// console.log(element.setAttribute("hidden",false)); //sets hidden attribute to false
+
+//removeAttribute-removes attribute from element
+
+// console.log(element.attributes); //returns NamedNodeMap
+
+// Custom attributes- data-AttributeName should be always used in html
+// accessed in js using dataset
+// console.log(element.dataset.code); // hisoka
+// console.log(element.dataset.mode); // hardcore
+
+//Inserting HTML using js-
+
+// let new_element=document.createElement('div');
+// new_element.innerHTML='<p>HI I am generated using js<p>';
+// // document.body.appendChild(new_element); // appends at end
+// document.body.prepend(new_element); //makes first child
+//element.before and element.after adds before/after element 
+//element.replaceWith() replaces itself with given element
+
+//other insertions-innerAdjacentHTML/Text/Element -beforebegin,beforeend,afterbegin,afterend
+//element.remove() //removes HTML element
+
+// let element=document.getElementsByTagName('p')[0];
+// element.className='hi bye kyu bataye';
+// console.log(element.getAttribute('class')); //hi bye kyu bataye
+// element.classList.add('bhaisahab'); //adds in class tag
+// console.log(element.getAttribute('class')); //hi bye kyu bataye bhaisahab
+// element.classList.toggle('red'); // adds if not exist else removes
+
+//SetTimeOut- executes after given time
+// setTimeout(()=>{
+//     console.log('Hello');
+// },2000); // prints hello after 2 seconds
 
 
 
