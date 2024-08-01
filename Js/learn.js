@@ -659,26 +659,86 @@ Kumar
 //     console.log('Hello');
 // },2000); // prints hello after 2 seconds
 
+// let sum=(a,b)=>console.log(`Sum: ${a+b}`);
+// setTimeout(sum,2000,3,2); // 3 and 2 are params of fn and delay of 2000 ms
+//Output-Sum: 5
 
+//ClearTimeOut-
+// let sum=(a,b)=>console.log(`Sum: ${a+b}`);
+// let a=setTimeout(sum,30000,3,2); //returns timer id
+// let b=prompt("Do you want to clear?");
+// if(b)clearTimeout(a); //cancels execution
 
+//SetInterval-runs fn infinitely after time delay
+// let sum=(a,b)=>console.log(`Sum: ${a+b}`);
+// let c=setInterval(sum,2000,3,2);
+// clearInterval(c); //cancels setInterval
 
+// Browser Events-
 
+// Mouse Events-click,context menu(right click),mouse move,mouse over/out,mouse up/down
+// Keyboard Events-keyup and keydown
+// Form element Events-submit,focus,etc
+// Document Events- DOMContentLoaded
 
+// let button=document.getElementById('b');
+// button.onclick=()=>{ //issue- this overwrites html onclick handler code.
+//     console.log('I am clicked');};
 
+//Event Listeners-can assign multiple handlers with same fn
+// let my_event=(e)=>{console.log('I am Clicked')};
+// button.addEventListener('click',my_event); //adds event listener
+// button.removeEventListener('click',my_event); //removes event listener
 
+// Open google.com in new tab with button
+// let button=document.getElementById('b');
+// button.addEventListener('click',(e)=>{window.open("https://www.google.com",'',"width=500 height=500 resizable=yes");});
 
+//Fetch website data after every 5 seconds-
 
+// let fetchContent=async (url)=>{
+//     data=await fetch(url);
+//     return await data.json();
+// };
+// setInterval(async ()=>{
+//     console.log(await fetchContent('https://jsonplaceholder.typicode.com/todos/1'))}
+//     ,2000);
 
+//Synchronous/Sequential Programming-
+// let name=prompt("Enter Name");
+// let age=prompt("Enter Age");
+// console.log(`My name is ${name} with age:${age}`); //It ran in sequential manner
+//Output-My name is Girish with age:20
 
+//Asynchronous Programming-
+// console.log('Started');
+// setTimeout(()=>console.log('Set TimeOut 1 is Running'),2000); //It ran after 2 seconds and next code executed first resulting in aysnc fashion output
+// console.log('Ended');
 
+    /* OUTPUT */
+/***************************
 
+Started
+Ended
+Set TimeOut 1 is Running
 
+***************************/
 
+//Callbacks-passing fn as param in fns events
 
+// function printkrdo(message,src){
+//     console.log(`${message} on ${src} file`);
+// }
 
+// function loadscript(url,callback){
+//     var script=document.createElement('script');
+//     script.src=url;
+//     script.onload=callback("EveryThing Works Fine",url);
+//     script.onerror=callback(new Error("Some Error Occured"),url);
+//     document.body.appendChild(script);
+// }
 
-
-
+// loadscript("https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js",printkrdo);
 
 
 
