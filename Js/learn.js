@@ -726,19 +726,112 @@ Set TimeOut 1 is Running
 
 //Callbacks-passing fn as param in fns events
 
+// Inversion of control-gives full access of fn to another function
+// Callback Hell/Pyramid of Doom- callbacks calling infinite callbacks within self
+
 // function printkrdo(message,src){
 //     console.log(`${message} on ${src} file`);
 // }
 
 // function loadscript(url,callback){
-//     var script=document.createElement('script');
+//     let script=document.createElement('script');
 //     script.src=url;
-//     script.onload=callback("EveryThing Works Fine",url);
-//     script.onerror=callback(new Error("Some Error Occured"),url);
+//     script.onload=()=>callback("EveryThing Works Fine",url);
+//     script.onerror=()=>callback(new Error("Some Error Occured"),url);
 //     document.body.appendChild(script);
 // }
 
-// loadscript("https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js",printkrdo);
+// loadscript("https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js",printkrdo);
+
+/* OUTPUT */
+/***************************
+ 
+EveryThing Works Fine on https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js file
+
+***************************/
+
+// loadscript("kucbhi.js",printkrdo);
+
+    /* OUTPUT */
+/***************************
+ 
+ GET http://127.0.0.1:5500/kucbhi.js net::ERR_ABORTED 404 (Not Found)
+ Error: Some Error Occured on kucbhi.js file
+
+***************************/
+
+//Promise- used for parallel execution
+// Solution of callback hell 
+
+// let vaada=new Promise((resolve,reject)=>{
+//     console.log('Promise done');
+//     resolve(69);
+// }); //Output-Promise done
+
+//Using then and catch-
+
+// let p=new Promise((resolve,reject)=>{
+//     console.log('Promise Pending');
+//     setTimeout(()=>{
+//         console.log('Finished Execution');
+//         resolve(true);
+//     },5000)} );
+
+
+    /* OUTPUT */
+/***************************
+ 
+Promise Pending
+Finished Execution
+
+***************************/
+
+// OR-
+// then- used to create resolve values and perform operation thereafter
+// Syntax-then((value),(error))
+
+// let p2=new Promise((resolve,reject)=>{
+//     console.log('Promise Pending');
+//     setTimeout(()=>{
+//         resolve(true);
+//     },5000)} ).then((value)=>{
+//         console.log(`Finished Execution with value:${value}`);
+// });
+
+    /* OUTPUT */
+/***************************
+ 
+Promise Pending
+Finished Execution with value:true
+
+***************************/
+
+//catch- used to handle rejected promises
+
+// let p=new Promise((resolve,reject)=>{
+//     console.log('Promise Pending');
+//     setTimeout(()=>{
+//         reject(new Error("Some Error Occured"));
+//     },5000)} ).catch((value)=>{
+//         console.log(`Finished Execution with value:${value}`);
+// });
+
+    /* OUTPUT */
+/***************************
+ 
+Promise Pending
+Finished Execution with value:Error: Some Error Occured
+
+***************************/
+
+
+
+
+
+
+
+
+
 
 
 
