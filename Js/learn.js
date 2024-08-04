@@ -824,6 +824,322 @@ Finished Execution with value:Error: Some Error Occured
 
 ***************************/
 
+// Promise Chaining-Every then() returns a new promise and every promise has to wait for parent promise to be executd
+
+// let p=new Promise((resolve,reject)=>{
+//     setTimeout(()=>{
+//         console.log('First Promise Running');
+//         resolve();
+//     },2000);
+// }).then((value)=>{
+//     let p2=new Promise((resolve,reject)=>{
+//         setTimeout(()=>{
+//             console.log('Second Promise Running');
+//             resolve();
+//         },2000);
+//     });
+//     return p2;
+// }).then((value)=>{
+//     return new Promise((resolve,reject)=>{
+//         console.log('Finished Execution');
+//         resolve();
+//     })
+// })
+
+    /* OUTPUT */
+/***************************
+ 
+First Promise Running
+Second Promise Running
+Finished Execution
+
+***************************/
+
+//Loadscript() via promise-
+
+// function loadscript(url){
+//     return new Promise((resolve,reject)=>{
+//         let script=document.createElement('script');
+//         script.type='text/javascript'
+//         script.src=url;
+//         document.body.appendChild(script);
+//         script.onload=()=>resolve(5);
+//         script.onerror=()=>reject(10);
+//     }).then((value)=>{
+//         console.log(`Script Loaded with resolve value: ${value}`);
+//     }).catch((error)=>{
+//         console.log(`Some Error Occured with reject value: ${error}`);
+//     })
+// }
+// loadscript('hisoka.js') //Output-Some Error Occured with reject value: 10
+
+// we can add multiple handlers which are independent(no waiting for another)-
+
+// let p=new Promise((resolve,reject)=>{
+//     console.log('First Promise Done');
+//     resolve(1);
+// });
+
+// p.then((value)=>{
+//     return new Promise((resolve,reject)=>{
+//         setTimeout(()=>{
+//             console.log('Second Promise Done');
+//         },3000)
+//     })
+// });
+
+// p.then((value)=>{
+//     console.log('Third Promise Done');
+// })
+
+    /* OUTPUT */
+/***************************
+ 
+First Promise Done
+Third Promise Done 
+Second Promise Done //after 3 seconds
+
+***************************/
+
+// Promise API- collection of 6 static methods of Promise class
+
+//Promise.all()-returns array of resolved values when all promises are fulfilled doesn't work if any promise rejected
+
+// let p1=new Promise((resolve,reject)=>{
+//     setTimeout(()=>{
+//         console.log('First Promise');
+//         resolve('Promise 1 Done');
+//     },1000)
+// })
+
+// let p2=new Promise((resolve,reject)=>{
+//     setTimeout(()=>{
+//         console.log('Second Promise');
+//         resolve('Promise 2 Done');
+//     },2000)
+// })
+
+// let p3=new Promise((resolve,reject)=>{
+//     setTimeout(()=>{
+//         console.log('Third Promise');
+//         resolve('Promise 3 Done');
+//     },3000)
+// });
+
+// let promise_all=Promise.all([p1,p2,p3]);
+// promise_all.then((value)=>{
+//     console.log(value);
+// })
+
+    /* OUTPUT */
+/***************************
+ 
+First Promise
+Second Promise
+Third Promise
+(3) ['Promise 1 Done', 'Promise 2 Done', 'Promise 3 Done']
+
+***************************/
+
+//Promise.allSettled()-returns array of status and values 
+//Promise.race()- returns first fulfilled promise whether resolved/rejected
+//Promise.any()- returns first fulfilled promise(ignores rejected) and AggregateError if all promises rejected
+//Promise.resolve()- returns a resolved promise with given value
+//Promise.reject()- returns a rejected promise with given value
+
+// async- ensures fn returns a promise
+// await- waits for promise to be fulfilled
+
+// async function solve(){
+//     let delhi=await new Promise((resolve,reject)=>{
+//         setTimeout(()=>{
+//             console.log('Delhi weather: 35 Deg')
+//             resolve('35 Deg')
+//         },5000)
+//     })
+//     let mumbai=await new Promise((resolve,reject)=>{
+//         setTimeout(()=>{
+//             console.log('Mumbai weather: 25 Deg')
+//             resolve('25 Deg')
+//         },3000)
+//     })
+//     return [delhi,mumbai];
+// }
+// function doing(){
+//     console.log('Doing Something');
+// }
+// let a=solve();
+// let b=doing();
+
+// a.then((x)=>console.log(x));
+
+    /* OUTPUT */
+/***************************
+ 
+Doing Something
+Delhi weather: 35 Deg
+Mumbai weather: 25 Deg
+(2) ['35 Deg', '25 Deg']
+
+***************************/
+
+//Error Handling-try and catch works only in scheduled code,if async fns are there will have to handle seperately
+
+// try{
+//     console.log(hisoka);
+// }
+// catch(error){
+//     console.log(error);
+// }
+
+    /* OUTPUT */
+/***************************
+ 
+ReferenceError: hisoka is not defined
+    at learn.js:989:17
+// catch code will run definitely
+
+***************************/
+
+//Error Object-main properties are name,message and stack
+
+// try{
+//     console.log(beerus);
+// }
+// catch(error){
+//     console.log(error.name);
+//     console.log(error.message);
+//     console.log(error.stack);
+// }
+
+    /* OUTPUT */
+/***************************
+
+ReferenceError
+learn.js:1011 beerus is not defined
+learn.js:1012 ReferenceError: beerus is not defined
+    at learn.js:1007:17
+
+***************************/
+
+// finally-runs nevertheless error occured or not
+
+// try{
+//     console.log(baki);
+// }
+// catch(error){
+//     console.log(error);
+// }
+// finally{
+//     console.log('Baki is supreme');
+// }
+
+    /* OUTPUT */
+/***************************
+
+ReferenceError: baki is not defined
+    at learn.js:1027:17
+Baki is supreme
+    
+***************************/
+
+// Promise.all() and mutliple await-it awaits all promises synchronously reducing time 
+
+
+// let p1=async ()=>{
+//     return new Promise((resolve,reject)=>{
+//         setTimeout(()=>{
+//             console.log('First Promise');
+//             resolve('Promise 1 Done');
+//         },1000)
+//     })
+// }
+
+// let p2=async ()=>{
+//     return new Promise((resolve,reject)=>{
+//         setTimeout(()=>{
+//             console.log('Second Promise');
+//             resolve('Promise 2 Done');
+//         },2000)
+//     })
+// }
+
+// let p3=async ()=>{
+//     return new Promise((resolve,reject)=>{
+//         setTimeout(()=>{
+//             console.log('Third Promise');
+//             resolve('Promise 3 Done');
+//         },3000)
+//     })
+// }
+
+// const run=async()=>{
+//     console.time("run");
+//     let a=await p1();
+//     let b=await p2();
+//     let c=await p3();
+//     console.timeEnd("run");
+// }
+
+// run();
+
+    /* OUTPUT */
+/***************************
+ 
+First Promise
+Second Promise
+Third Promise
+run: 6159.56201171875 ms
+
+***************************/
+
+// Using await Promise.all()-schedule all promises at same time and wait till last promise is performed
+
+// const run=async ()=>{
+//     console.time("run");
+//     let a=p1();
+//     let b=p2();
+//     let c=p3();
+//     let result=await Promise.all([a,b,c]);
+//     console.log(result);
+//     console.timeEnd("run");
+// }
+// run();
+
+/* OUTPUT */
+/***************************
+
+First Promise
+Second Promise
+Third Promise
+(3) ['Promise 1 Done', 'Promise 2 Done', 'Promise 3 Done']
+run: 3006.962890625 ms
+
+***************************/
+
+//Fetch API-
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
