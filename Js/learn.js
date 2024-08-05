@@ -1117,20 +1117,74 @@ run: 3006.962890625 ms
 
 ***************************/
 
+//AJAX(Async js and xml)-send and retrieve info from network
+
 //Fetch API-
 
+// let data=fetch("https://goweather.herokuapp.com/weather/Ny")
+// data.then((response)=>{
+    
+    // Response object has 2 main properties-status for status code and ok to check whether code b/w 200-299
+    // console.log(response.status);
+    // console.log(response.ok);
 
+    // json() or text() either one can only be used
+    // return response.json() //returns Response Object in JSON format
+// }).then((response)=>
+    // console.log(response)
+// ) 
+    /* OUTPUT */
+/***************************
 
+200
+true
+{temperature: '+25 °C', wind: '8 km/h', description: 'Sunny', forecast: Array(3)}
 
+***************************/
 
+//Response headers- additional metadata in response
+//Request headers- sends additional params in fetch() as key-value pair
 
+//POST request-
 
+// let posting=async ()=>{
+//     let options={
+//         method: "POST",
+//         headers:{
+//             "Content-type":"application/json"
+//         },
+//         body:JSON.stringify({
+//             title: "Girish",
+//             code: "MCA",
+//             userId: 23
+//         })
+//     }
+//     let data=await fetch("https://jsonplaceholder.typicode.com/posts/",options);
+//     let response=await data.json()
+//     return response
+// }
+// const main=async ()=>{
+//     let response=await posting()
+//     console.log(response)
+// }
 
+// main()
 
+    /* OUTPUT */
+/***************************
 
+{title: 'Girish', code: 'MCA', userId: 23, id: 101}
 
+***************************/
 
+//Cookies-small strings of data directly stored in client browser(key=value pair seperated by ;)
+//document.cookie="new cookie" adds it in existing cookie list
 
+// can't create cookie with special characters using document.cookie
+// To use it we can use encodeUriComponent(value) for storing and decodeUriComponent(value) for getting
+// options in cookie can be set as "key=value;path=/a;expires=Time" //cookie only exist at /a page bcoz of path
+
+//NOTE-single cookie can't exceed 4KB and limited to max 20 cookie per domain
 
 
 
