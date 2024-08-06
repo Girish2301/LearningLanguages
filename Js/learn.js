@@ -1186,16 +1186,30 @@ true
 
 //NOTE-single cookie can't exceed 4KB and limited to max 20 cookie per domain
 
+// Local Storage- not sent to server on each request
 
+// let key=prompt("Enter Key to Set")
+// let value=prompt("Enter Value to Set")
+// localStorage.setItem(key,value) // Sets data in local storage 
+// console.log(`The value at ${key} is ${localStorage.getItem(key)} `) // Output-The value at name is girish
+// localStorage.removeItem(key); // Removes Key with value
+// localStorage.clear(); //Removes all items
+// localStorage.key(0); //gets key at index 0
 
+// //another way-
+// localStorage.one=1;
+// delete localStorage.one;
 
+// Session Storage- used less than local storage,data only exist in refresh not in closing/opening of new tabs
+// sessionStorage.setItem('name','girish')
+// console.log(sessionStorage.getItem('name')); //Output- girish
+// sessionStorage.removeItem('name'); //Removes
+// sessionStorage.clear(); //Removes all items
 
-
-
-
-
-
-
+//Storage Event - gets triggered whenever anythings changes in local or session storage
+// window.onstorage = (e) => {
+//     console.log('data updated');
+// };
 
 
 
